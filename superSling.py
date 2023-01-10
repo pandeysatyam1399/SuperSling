@@ -13,7 +13,7 @@ RACKNUMBER = 0
 
 window = Tk()  
 window.configure(bg="#000000")
-# window.state('zoomed')
+window.state('zoomed')
 
 # getting screen width and height of display
 width= window.winfo_screenwidth()
