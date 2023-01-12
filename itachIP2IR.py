@@ -195,4 +195,17 @@ def OnRemotePress(btnNumber):
         err = sendData(code)
     return
 
-
+def OnKeyPress(key):
+    code = ""
+    if key == 'g':
+        code = "guide"
+        err = sendData(code)
+        # print(err)
+    elif key == 's':
+        code = "select"
+        err = sendData(code)
+        # print(err)
+    elif key == 'p':
+        code = "power"
+        err = sendData(code)
+        # print(err)

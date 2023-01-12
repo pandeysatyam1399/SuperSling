@@ -20,6 +20,16 @@ width= window.winfo_screenwidth()
 height= window.winfo_screenheight()
 window.title("SuperSling 0.1.0")
 
+def key_pressed(key):
+    print(key.char)
+    OnKeyPress(key.char)
+
+def return_pressed(key):
+    print('s')
+    OnKeyPress('s')
+
+window.bind("<Key>",key_pressed)
+
 mainFrame = Frame(window,width=width,height=height,bg="#000000")
 mainFrame.grid(row=0,column=0)
 
@@ -70,6 +80,7 @@ def render_single_view(stb_no):
     vcap = cv2.VideoCapture(video_url)
     videoName.config(text=str(stb_name))
     getData(stbNum)
+    window.bind("<Return>",return_pressed)
     while(1):
         img = vcap.read()[1]
         img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
