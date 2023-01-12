@@ -5,12 +5,14 @@ from functools import partial
 from PIL import Image,ImageTk 
 import multistreamsolution
 from itachIP2IR import *
-from subprocess import call
+from subprocess import call,Popen
+from multiprocessing import Process
 import glob
-#from tester import *
+from threading import Thread
+import os
 
 RACKNUMBER = 0
-
+STBNUMBER = 0
 window = Tk()  
 window.configure(bg="#000000")
 window.state('zoomed')
@@ -60,10 +62,14 @@ for i in range(0,39):
 
 # Single Window
 def render_single_view(stb_no):
+    global STBNUMBER
     if stb_no<16:
         stbNum = ( stb_no + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) )
     else:
         stbNum = stb_no
+    STBNUMBER.value =stbNum
+    print(STBNUMBER.value)
+    # getSTB(stbNum)
     video_url = getRTSP(stbNum)
     stb_name = getSTBInfo(stbNum)
     print (video_url)  
@@ -150,6 +156,13 @@ for i in range(0,18):
         btnArr.append(Button(btnFrame,text = "INFO",command =optionView ,height=2, width=10 , fg= "#fdfdfd", activeforeground= "#9e4cef",activebackground= "#9e4cef",background= "#621ee8"))  
         btnArr[i+1].grid(row=0, column=i+1)
 
-render_single_view(0)
+ 
+def superRunner(res):
+    global STBNUMBER
+    STBNUMBER = res
+    render_single_view(0)
+    window.mainloop()   
 
-window.mainloop()
+if __name__=='__main__':
+    superRunner()
+

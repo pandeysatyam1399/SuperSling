@@ -15,7 +15,7 @@ itachCodes = pd.read_csv('ir_codes_itach.txt',delimiter="|",names=['remote_type'
 
 # Database 
 dattDB = pd.read_csv('datt_lite_DB.txt',delimiter="|",skiprows=1,names=['STB_ID','iTach_IP','iTach_port','stb_type','STB_INFO','STB_IP','IsActive'],on_bad_lines='skip')
-print(dattDB)
+# print(dattDB)
 # irk functionality
 def getData(stb_no):
     global remote_type,itach_IP,itach_port
@@ -23,6 +23,7 @@ def getData(stb_no):
     remote_type = data.get("stb_type")
     itach_port = data.get("iTach_port")
     itach_IP = data.get("iTach_IP")
+    # return [itach_IP,itach_port]
 
 def sendData(onPress):
     global remote_type,itach_IP,itach_port
@@ -195,4 +196,22 @@ def OnRemotePress(btnNumber):
         err = sendData(code)
     return
 
+
+def OnRemotePressKey(key):
+    if key == 'g':
+        code = "guide"
+        err = sendData(code)
+    elif key == 'i':
+        code = "info"
+        err = sendData(code)
+    elif key == 'enter':
+        code = "select"
+        err = sendData(code)
+    elif key == 'up':
+        code = "arrowup"
+        err = sendData(code)
+    elif key == 'down':
+        code = "arrowdown"
+        err = sendData(code)
+    return
 
