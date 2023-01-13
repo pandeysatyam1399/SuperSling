@@ -207,7 +207,6 @@ def OnRemotePress(btnNumber):
 # Key Press Function
 def OnKeyPress(key):
     code = ""
-    print(key)
     if key == 'g' or key == 'G': # guide
         code = "guide"
         err = sendData(code)

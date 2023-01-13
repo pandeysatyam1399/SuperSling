@@ -1,5 +1,4 @@
-from tkinter import *
-from tkinter import Image 
+from tkinter import * 
 import cv2  
 from functools import partial  
 from PIL import Image,ImageTk 
