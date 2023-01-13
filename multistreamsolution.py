@@ -2,7 +2,6 @@ from PyQt5 import QtCore, QtGui ,QtWidgets
 import qdarkstyle
 from threading import Thread
 from collections import deque
-from datetime import datetime
 import time
 import sys
 import cv2

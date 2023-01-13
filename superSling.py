@@ -3,7 +3,6 @@ from tkinter import Image
 import cv2  
 from functools import partial  
 from PIL import Image,ImageTk 
-import multistreamsolution
 from itachIP2IR import *
 from subprocess import call
 import glob
@@ -15,13 +14,9 @@ window = Tk()
 window.configure(bg="#000000")
 # window.state('zoomed')
 
-# getting screen width and height of display
-# width= window.winfo_screenwidth()
-# height= window.winfo_screenheight()
 window.title("SuperSling 0.1.0")
 
 def key_pressed(key):
-    # print(key.char,key.keysym)
     if key.char == key.keysym:
         OnKeyPress(key.char)
     else:
@@ -92,6 +87,7 @@ def renderAll():
     out = call(["python","{}".format('multistreamsolution.py'),"{}".format(RACKNUMBER)])
     print(out)
 
+# STB selection window
 def optionView():
     top = Toplevel()
     top.title("STB Selector")
@@ -159,6 +155,7 @@ for i in range(0,18):
         btnArr.append(Button(btnFrame,text = "INFO",command =optionView ,height=2, width=10 , fg= "#fdfdfd", activeforeground= "#9e4cef",activebackground= "#9e4cef",background= "#621ee8"))  
         btnArr[i+1].grid(row=0, column=i+1)
 
-render_single_view(0)
+def RunSuperSling():
+    render_single_view(0)
 
-window.mainloop()
+    window.mainloop()

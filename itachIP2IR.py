@@ -15,7 +15,7 @@ itachCodes = pd.read_csv('ir_codes_itach.txt',delimiter="|",names=['remote_type'
 
 # Database 
 dattDB = pd.read_csv('datt_lite_DB.txt',delimiter="|",skiprows=1,names=['STB_ID','iTach_IP','iTach_port','stb_type','STB_INFO','STB_IP','IsActive'],on_bad_lines='skip')
-print(dattDB)
+
 # irk functionality
 def getData(stb_no):
     global remote_type,itach_IP,itach_port
@@ -24,6 +24,7 @@ def getData(stb_no):
     itach_port = data.get("iTach_port")
     itach_IP = data.get("iTach_IP")
 
+# send to itach
 def sendData(onPress):
     global remote_type,itach_IP,itach_port
     out = 0
@@ -38,23 +39,28 @@ def sendData(onPress):
     s.close()
     return out
 
+# get itach frequency codes
 def getItachCodes(remote_data):
     data = itachCodes.loc[itachCodes['remote_type']==remote_data]
     data = data['itachCode'].tolist()
     itachCode = "{}".format(*data)
     return itachCode
 
+# get STB IP
 def getSTBIP(stbno):
     data = dattDB.iloc[stbno].get("STB_IP")
     return data
-    
+
+# get RTSP link    
 def getRTSP(stbno):
     IP = getSTBIP(stbno)
     return "rtsp://root:admin@"+ IP +"/axis-media/media.amp"
 
+# get STB info
 def getSTBInfo(stbno):
     return dattDB.iloc[stbno].get("STB_INFO")
 
+# get STB INFO
 def getAllInfo():
     data =  dattDB["STB_INFO"].to_list()
     rack = []
@@ -63,15 +69,18 @@ def getAllInfo():
         rack.append(item)
     # print(rack)
     return rack
-    
+
+# get Rack Info    
 def getRackInfo(rack):
     data = getAllInfo()
     return [item[3] for item in data if item[0] == rack]
 
+# get STB FROM rack
 def fetchSTB(rack):
     # get all STB_ID of specified Rack
     return [k for k,v in dict(zip(dattDB['STB_ID'].to_list(),[item[0] for item in getAllInfo()])).items() if v==rack] 
 
+# get Rack Count
 def getRackCount():
     data = getAllInfo()
     return pd.unique([item[0] for item in data])
@@ -195,6 +204,7 @@ def OnRemotePress(btnNumber):
         err = sendData(code)
     return
 
+# Key Press Function
 def OnKeyPress(key):
     code = ""
     print(key)
