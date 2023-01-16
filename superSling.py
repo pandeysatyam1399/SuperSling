@@ -84,8 +84,8 @@ def render_single_view(stb_no):
 
 # Supersling Monitor
 def renderAll():
-    out = call(["python","{}".format('multistreamsolution.py'),"{}".format(RACKNUMBER)])
-    print(out)
+    call(["python","{}".format('multistreamsolution.py'),"{}".format(RACKNUMBER)])
+
 
 # STB selection window
 def optionView():

@@ -48,7 +48,7 @@ class CameraWidget(QtWidgets.QWidget):
         # Periodically set video frame to display
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.set_frame)
-        self.timer.start(.5)
+        self.timer.start(1)
 
         print('Started camera: {}'.format(self.camera_stream_link))
 
