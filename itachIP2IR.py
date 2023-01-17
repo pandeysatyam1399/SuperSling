@@ -16,7 +16,7 @@ class itach:
         # IR codes
         self.itachCodes = pd.read_csv('ir_codes_itach.txt',delimiter="|",names=['remote_type','itachCode','nothing'],on_bad_lines='skip')
         # Database
-        self.dattDB = pd.read_csv('datt_lite_DB.txt',delimiter="|",skiprows=1,names=['STB_ID','iTach_IP','iTach_port','stb_type','STB_INFO','STB_IP','IsActive'],on_bad_lines='skip')
+        self.dattDB = pd.read_csv('datt_lite_DB.txt',delimiter="|",comment='#',names=['STB_ID','iTach_IP','iTach_port','stb_type','STB_INFO','STB_IP','IsActive'],on_bad_lines='skip')
     
     '''get Data From DB'''
     def getData(self,stb_no) -> None:
@@ -55,11 +55,13 @@ class itach:
     '''get STB IP'''    
     def getSTBIP(self,stbno):
         data = self.dattDB.iloc[stbno].get("STB_IP")
+        print("getting IP",data)
         return data
     
     '''get RTSP Link'''
     def getRTSP(self,stbno):
           IP = self.getSTBIP(stbno)
+          print("getting RTSP",IP)
           return "rtsp://root:admin@"+ IP +"/axis-media/media.amp"
     
     '''get STB info'''
@@ -73,11 +75,13 @@ class itach:
         for item in self.dattDB["STB_INFO"].to_list():
             item = item.split("-")
             rack.append(item)
-            
+        
+        print("get all rack info",rack)  
         return rack
     
     '''get all STB in Particular Rack'''
     def getRackInfo(self,rack):
+        print("rack info ",rack)
         return [item[3] for item in self.data if item[0]==rack]
     
     '''get STB FROM rack'''
