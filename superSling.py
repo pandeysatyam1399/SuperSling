@@ -1,26 +1,29 @@
-from tkinter import *
-from tkinter import Image 
+from tkinter import * 
 import cv2  
 from functools import partial  
 from PIL import Image,ImageTk 
-import multistreamsolution
-from itachIP2IR import *
 from subprocess import call
 import glob
-#from tester import *
+from itachIP2IR import itach
 
 RACKNUMBER = 0
+IP2IR = itach()
 
 window = Tk()  
 window.configure(bg="#000000")
 # window.state('zoomed')
 
-# getting screen width and height of display
-width= window.winfo_screenwidth()
-height= window.winfo_screenheight()
 window.title("SuperSling 0.1.0")
 
-mainFrame = Frame(window,width=width,height=height,bg="#000000")
+def key_pressed(key):
+    if key.char == key.keysym:
+        IP2IR.OnKeyPress(key.char)
+    else:
+        IP2IR.OnKeyPress(key.keysym)
+
+window.bind("<Key>",key_pressed)
+
+mainFrame = Frame(window,bg="#000000")
 mainFrame.grid(row=0,column=0)
 
 btnArr =[]
@@ -55,7 +58,7 @@ for img in glob.glob("images/*.png"):
     j+=1    
 
 for i in range(0,39):
-    remoteBtn.append(Button(remoteFrame,image=btnImageArr[i],bg="#000000",command=partial(OnRemotePress,i)))
+    remoteBtn.append(Button(remoteFrame,image=btnImageArr[i],bg="#000000",command=partial(IP2IR.OnRemotePress,i)))
     remoteBtn[i].grid(row=i//3, column=i%3)
 
 # Single Window
@@ -64,12 +67,13 @@ def render_single_view(stb_no):
         stbNum = ( stb_no + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) )
     else:
         stbNum = stb_no
-    video_url = getRTSP(stbNum)
-    stb_name = getSTBInfo(stbNum)
+    IP2IR.getData(stbNum)
+    video_url = IP2IR.getRTSP(stbNum)
+    stb_name = IP2IR.getSTBInfo(stbNum)
     print (video_url)  
     vcap = cv2.VideoCapture(video_url)
     videoName.config(text=str(stb_name))
-    getData(stbNum)
+    # getData(stbNum)
     while(1):
         img = vcap.read()[1]
         img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
@@ -80,9 +84,10 @@ def render_single_view(stb_no):
 
 # Supersling Monitor
 def renderAll():
-    out = call(["python","{}".format('multistreamsolution.py'),"{}".format(RACKNUMBER)])
-    print(out)
+    call(["python","{}".format('multistreamsolution.py'),"{}".format(RACKNUMBER)])
 
+
+# STB selection window
 def optionView():
     top = Toplevel()
     top.title("STB Selector")
@@ -106,7 +111,7 @@ def optionView():
     
     def rackView(rackNum):
         btnStb = []
-        stbCount = fetchSTB(rackNum)
+        stbCount = IP2IR.fetchSTB(rackNum)
         for i in rackInfo[int(rackNum.split(" ")[1])-1]:
             btnStb.append(Button(stbFrame,text=i,font=('Bold',14),width=30,pady=10,fg= "#fdfdfd" , activeforeground= "#9e4cef",activebackground= "#9e4cef",background= "#621ee8"))
         for i in range(0,len(btnStb)):
@@ -116,9 +121,9 @@ def optionView():
             else:
                 btnStb[i].grid(row=i//4,column=i%4)
     
-    cnt = getRackCount()
+    cnt = IP2IR.getRackCount()
     for i in cnt:
-        rackInfo.append(getRackInfo(i))
+        rackInfo.append(IP2IR.getRackInfo(i))
         btnRack.append(Button(rackFrame,text=i,font=('Bold',14),pady=10,command=partial(rackView,i),fg= "#fdfdfd" , activeforeground= "#9e4cef",activebackground= "#9e4cef",background= "#621ee8"))
     for i in range(0,len(btnRack)):
         btnRack[i].grid(row=i,column=0)
@@ -133,7 +138,7 @@ clicked = StringVar()
 clicked.trace_add('write',getRack)
 clicked.set("Rack 1")
 
-rackBtn = OptionMenu(btnFrame, clicked ,*list(getRackCount()))
+rackBtn = OptionMenu(btnFrame, clicked ,*list(IP2IR.getRackCount()))
 rackBtn.config(height=2 , width= 12,fg= "#fdfdfd" , activeforeground= "#9e4cef",activebackground= "#9e4cef",background= "#BF55EC")
 btnArr.append(rackBtn)          
 btnArr[0].grid(row=0, column=0)
@@ -150,6 +155,7 @@ for i in range(0,18):
         btnArr.append(Button(btnFrame,text = "INFO",command =optionView ,height=2, width=10 , fg= "#fdfdfd", activeforeground= "#9e4cef",activebackground= "#9e4cef",background= "#621ee8"))  
         btnArr[i+1].grid(row=0, column=i+1)
 
-render_single_view(0)
+def RunSuperSling():    
+    render_single_view(0)
 
-window.mainloop()
+    window.mainloop()

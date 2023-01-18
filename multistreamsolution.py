@@ -2,12 +2,11 @@ from PyQt5 import QtCore, QtGui ,QtWidgets
 import qdarkstyle
 from threading import Thread
 from collections import deque
-from datetime import datetime
 import time
 import sys
 import cv2
 import imutils
-from itachIP2IR import *
+from itachIP2IR import itach
 
 class CameraWidget(QtWidgets.QWidget):
     """Independent camera feed
@@ -49,7 +48,7 @@ class CameraWidget(QtWidgets.QWidget):
         # Periodically set video frame to display
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.set_frame)
-        self.timer.start(.5)
+        self.timer.start(1)
 
         print('Started camera: {}'.format(self.camera_stream_link))
 
@@ -160,22 +159,23 @@ if __name__ == '__main__':
     # Create Camera Widgets 
     RACKNUMBER = sys.argv[1]
     # Stream links
-    camera0 = getRTSP(( 0 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera1 = getRTSP(( 1 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera2 = getRTSP(( 2 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera3 = getRTSP(( 3 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera4 = getRTSP(( 4 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera5 = getRTSP(( 5 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera6 = getRTSP(( 6 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera7 = getRTSP(( 7 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera8 = getRTSP(( 8 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera9 = getRTSP(( 9 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera10 = getRTSP(( 10 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera11 = getRTSP(( 11 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera12 = getRTSP(( 12 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera13 = getRTSP(( 13 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera14 = getRTSP(( 14 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
-    camera15 = getRTSP(( 15 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    cam = itach()
+    camera0 = cam.getRTSP(( 0 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera1 = cam.getRTSP(( 1 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera2 = cam.getRTSP(( 2 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera3 = cam.getRTSP(( 3 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera4 = cam.getRTSP(( 4 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera5 = cam.getRTSP(( 5 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera6 = cam.getRTSP(( 6 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera7 = cam.getRTSP(( 7 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera8 = cam.getRTSP(( 8 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera9 = cam.getRTSP(( 9 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera10 = cam.getRTSP(( 10 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera11 = cam.getRTSP(( 11 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera12 = cam.getRTSP(( 12 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera13 = cam.getRTSP(( 13 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera14 = cam.getRTSP(( 14 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
+    camera15 = cam.getRTSP(( 15 + 16 * ( int( RACKNUMBER.split(" ")[1] ) - 1) ))
     
     
     # Create camera widgets
