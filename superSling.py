@@ -16,6 +16,9 @@ window.configure(bg="#000000")
 window.title("SuperSling 0.1.0")
 
 def key_pressed(key):
+    if key.char == 'Q':
+        window.quit()
+        window.destroy()
     if key.char == key.keysym:
         IP2IR.OnKeyPress(key.char)
     else:
@@ -75,12 +78,16 @@ def render_single_view(stb_no):
     videoName.config(text=str(stb_name))
     # getData(stbNum)
     while(1):
-        img = vcap.read()[1]
-        img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img,(1280,720))
-        img = ImageTk.PhotoImage(Image.fromarray(img))
-        videoLabel['image'] = img
+        try:
+            img = vcap.read()[1]
+            img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+            img = cv2.resize(img,(1280,720))
+            img = ImageTk.PhotoImage(Image.fromarray(img))
+            videoLabel['image'] = img
+        except:
+            break
         window.update()  
+        
 
 # Supersling Monitor
 def renderAll():
