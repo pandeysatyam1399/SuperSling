@@ -1,8 +1,6 @@
-## SuperSling
+# SuperSling GUI
 
-#SuperSling GUI
-
-# Requirements 
+## Requirements 
   - Python3.8
   - 
 
